@@ -27,6 +27,25 @@ export default defineType({
       },
     }),
     defineField({
+      name: 'type',
+      title: 'Type',
+      type: 'string',
+      options: {
+        list: ['breakfast', 'lunch', 'dessert', 'snack', 'other'],
+        layout: 'dropdown'
+      },
+      validation: Rule => Rule.required()
+    }),
+    defineField({
+      name: 'allergens',
+      title: 'Allergens',
+      type: 'array',
+      of: [{type: 'string'}],
+      options: {
+        layout: 'tags'
+      }
+    }),
+    defineField({
       name: 'description',
       title: 'Description',
       type: 'text',
