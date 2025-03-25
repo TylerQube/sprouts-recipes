@@ -1,0 +1,122 @@
+import {defineField, defineType} from 'sanity'
+
+/**
+ * Post schema.  Define and edit the fields for the 'post' content type.
+ * Learn more: https://www.sanity.io/docs/schema-types
+ */
+
+export default defineType({
+  name: 'recipe',
+  title: 'Recipe',
+  type: 'document',
+
+  fields: [
+    defineField({
+      name: 'title',
+      title: 'Title',
+      type: 'string',
+    }),
+    defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      validation: (Rule) => Rule.required(),
+      options: {
+        source: 'title',
+        maxLength: 96,
+      },
+    }),
+    defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'text',
+      rows: 4,
+    }),
+    defineField({
+      name: 'mainImage',
+      title: 'Main image',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+			fields: [
+				defineField({
+					name: 'alt',
+					title: 'Alternative text',
+					type: 'string',
+				}),
+			],
+    }),
+    defineField({
+      name: 'ingredients',
+      title: 'Ingredients',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {
+              name: 'section',
+              title: 'Ingredient Section',
+              type: 'string',
+              initialValue: 'Ingredients'
+            },
+            {
+              name: 'subIngredients',
+              type: 'array',
+              of: [
+                {
+                  type: 'object',
+                  fields: [
+                    {
+                      name: 'name',
+                      title: 'Name',
+                      type: 'string'
+                    },
+                    {
+                      name: 'quantity',
+                      title: 'Quantity',
+                      type: 'number',
+                      validation: Rule => Rule.min(0)
+                    },
+                    {
+                      name: 'unit',
+                      title: 'Unit',
+                      type: 'string',
+                      options: {
+                        list: ['g', 'kg', 'mL', 'L', 'tsp', 'tbsp', 'oz', 'lb'],
+                        layout: 'dropdown'
+                      }
+                    }
+                  ]
+
+                }
+              ]
+            },
+          ]
+        }
+      ]
+    }),
+    defineField({
+      name: 'instructions',
+      title: 'Instructions',
+      type: 'array',
+      of: [
+        {
+          type: 'string'
+        }
+      ]
+    }),
+  ],
+  preview: {
+    select: {
+      title: 'title',
+      author: 'author.name',
+      media: 'mainImage',
+    },
+    prepare(selection) {
+      const {author} = selection
+      return {...selection, subtitle: author && `by ${author}`}
+    },
+  },
+})

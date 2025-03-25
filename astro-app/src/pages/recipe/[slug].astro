@@ -4,68 +4,67 @@ import { PortableText } from "astro-portabletext";
 import Layout from "../../layouts/Layout.astro";
 import { formatDate } from "../../utils";
 import { urlFor } from "../../utils/image";
-import { getPost, getPosts } from "../../utils/sanity";
+import { getRecipe, getRecipes } from "../../utils/sanity";
 
 export async function getStaticPaths() {
-  const posts = await getPosts();
-  return posts.map((post) => ({
-    params: { slug: post.slug.current },
+  const recipes = await getRecipes();
+  return recipes.map((recipe) => ({
+    params: { slug: recipe.slug.current },
   }));
 }
 
 type Params = InferGetStaticParamsType<typeof getStaticPaths>;
 const { slug } = Astro.params as Params;
 
-const post = await getPost(slug);
+const recipe = await getRecipe(slug);
 ---
 
-<Layout title={post.title!}>
-  <section class="post">
+<Layout title={recipe.title!}>
+  <section class="recipe">
     {
-      post.mainImage ? (
+      recipe.mainImage ? (
         <img
-          class="post__cover"
-          src={urlFor(post.mainImage).url()}
+          class="recipe__cover"
+          src={urlFor(recipe.mainImage).url()}
           alt="Cover image"
         />
       ) : (
-        <div class="post__cover--none" />
+        <div class="recipe__cover--none" />
       )
     }
-    <div class="post__container">
-      <h1 class="post__title">{post.title}</h1>
-      <p class="post__excerpt">{post.excerpt}</p>
-      <p class="post__date">
-        {formatDate(post._createdAt)}
+    <div class="recipe__container">
+      <h1 class="recipe__title">{recipe.title}</h1>
+      <p class="recipe__date">
+        {formatDate(recipe._createdAt)}
       </p>
-      <div class="post__content">
-        <PortableText value={post.body} />
+      <div class="recipe__content">
+        <PortableText value={recipe.body} />
       </div>
     </div>
   </section>
 </Layout>
 
 <style>
-  .post {
+  .recipe {
     width: 100%;
     margin: var(--space-1) 0 var(--space-4);
 
-    & .post__cover,
-    & .post__cover--none {
+    & .recipe__cover,
+    & .recipe__cover--none {
       width: 100%;
       height: 200px;
       object-fit: cover;
     }
 
-    & .post__cover--none {
+    & .recipe__cover--none {
       background: var(--black);
     }
 
-    & .post__container {
+    & .recipe__container {
       padding: 0 var(--space-3);
     }
 
-    & .post__content {
+    & .recipe__content {
       font-family: var(--font-family-serif);
       font-weight: 400;
       font-size: var(--font-size-4);
@@ -86,7 +85,7 @@ const post = await getPost(slug);
       }
     }
 
-    & .post__title {
+    & .recipe__title {
       font-family: var(--font-family-sans);
       font-size: var(--font-size-7);
       line-height: var(--line-height-6);
@@ -94,7 +93,7 @@ const post = await getPost(slug);
       font-weight: 800;
     }
 
-    & .post__excerpt {
+    & .recipe__excerpt {
       font-family: var(--font-family-serif);
       font-size: var(--font-size-5);
       line-height: var(--line-height-4);
@@ -102,7 +101,7 @@ const post = await getPost(slug);
       font-weight: 400;
     }
 
-    & .post__date {
+    & .recipe__date {
       font-family: var(--font-family-sans);
       font-weight: 600;
       font-size: var(--font-size-1);
@@ -112,34 +111,34 @@ const post = await getPost(slug);
   }
 
   @media (min-width: 800px) {
-    .post {
-      & .post__cover,
-      & .post__cover--none {
+    .recipe {
+      & .recipe__cover,
+      & .recipe__cover--none {
         width: 750px;
         height: 380px;
       }
 
-      & .post__title {
+      & .recipe__title {
         font-size: var(--font-size-10);
         line-height: var(--line-height-10);
         margin: var(--space-6) 0 0;
         letter-spacing: -0.025em;
       }
 
-      & .post__excerpt {
+      & .recipe__excerpt {
         font-size: var(--font-size-5);
         line-height: var(--line-height-5);
         margin-top: var(--space-3);
         margin-bottom: var(--space-3);
       }
 
-      & .post__date {
+      & .recipe__date {
         font-size: var(--font-size-3);
         line-height: var(--line-height-2);
         margin-top: var(--space-0);
       }
 
-      & .post__content {
+      & .recipe__content {
         margin-top: var(--space-7);
       }
     }

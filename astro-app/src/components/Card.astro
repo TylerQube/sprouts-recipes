@@ -1,22 +1,22 @@
 ---
 import { formatDate } from "../utils";
 import { urlFor } from "../utils/image";
-import type { Post } from "../utils/sanity";
+import type { Recipe } from "../utils/sanity";
 
 interface Props {
-  post: Post;
+  recipe: Recipe;
 }
 
-const { post } = Astro.props;
+const { recipe: recipe } = Astro.props;
 ---
 
 <div class="card">
   {
-    post.mainImage ? (
+    recipe.mainImage ? (
       <img
         class="card__cover"
-        src={urlFor(post.mainImage).width(500).height(300).url()}
-        alt={post.mainImage.alt || ""}
+        src={urlFor(recipe.mainImage).width(500).height(300).url()}
+        alt={recipe.mainImage.alt || ""}
       />
     ) : (
       <div class="card__cover--none" />
@@ -26,14 +26,13 @@ const { post } = Astro.props;
     <h3 class="card__title">
       <a
         class="card__link"
-        href={`/post/${post.slug.current}`}
+        href={`/recipe/${recipe.slug.current}`}
       >
-        {post.title}
+        {recipe.title}
       </a>
     </h3>
-    <p class="card__excerpt">{post.excerpt}</p>
     <p class="card__date">
-      {formatDate(post._createdAt)}
+      {formatDate(recipe._createdAt)}
     </p>
   </div>
 </div>
