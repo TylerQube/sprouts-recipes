@@ -11,8 +11,8 @@ export function urlFor(source: Image) {
 
 export async function getPlaceholders(): Promise<string[]> {
   const dir = "./public/placeholders/";
-  const cur = await fs.readdirSync("./");
-  return await fs.readdirSync(dir);
+  const cur = (await fs.readdirSync(dir));
+  return cur.filter(s => s.endsWith(".jpg"));
 }
 
 const placeholders: string[] = await getPlaceholders();
