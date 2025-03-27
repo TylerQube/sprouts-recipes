@@ -46,6 +46,12 @@ export default defineType({
       }
     }),
     defineField({
+      name: 'servings',
+      title: 'Servings',
+      type: 'number',
+      validation: Rule => Rule.required().min(1)
+    }),
+    defineField({
       name: 'description',
       title: 'Description',
       type: 'text',
@@ -90,22 +96,24 @@ export default defineType({
                     {
                       name: 'name',
                       title: 'Name',
-                      type: 'string'
+                      type: 'string',
+                      validation: Rule => Rule.required()
                     },
                     {
                       name: 'quantity',
                       title: 'Quantity',
-                      type: 'number',
-                      validation: Rule => Rule.min(0)
+                      type: 'string',
+                      validation: Rule => Rule.required().min(0)
                     },
                     {
                       name: 'unit',
                       title: 'Unit',
                       type: 'string',
                       options: {
-                        list: ['g', 'kg', 'mL', 'L', 'tsp', 'tbsp', 'oz', 'lb'],
+                        list: ['g', 'kg', 'mL', 'L', 'tsp', 'tbsp', 'cup', 'oz', 'lb'],
                         layout: 'dropdown'
-                      }
+                      },
+                      validation: Rule => Rule.required()
                     }
                   ]
 

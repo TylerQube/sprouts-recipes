@@ -26,7 +26,7 @@ export interface Ingredient {
 
 export interface IngredientSection {
   section: string,
-  ingredients: Ingredient[]
+  subIngredients: Ingredient[]
 };
 
 export interface Recipe {
