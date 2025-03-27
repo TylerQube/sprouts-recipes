@@ -10,7 +10,7 @@ interface Props {
 const { recipe: recipe } = Astro.props;
 ---
 
-<div class="card">
+<div class="card" style={`transform: rotate(${Math.random()*10-5}deg);`} >
   <img class="pin" src="/pushpins/red.png" alt="pushpin"/>
   {
     recipe.mainImage ? (
@@ -27,6 +27,7 @@ const { recipe: recipe } = Astro.props;
     <h3 class="card__title">
       <a
         class="card__link"
+        style={"font-size: var(" + (recipe.title.length > 12 ? (recipe.title.length > 24 ? '--font-size-3' : '--font-size-4') : '--font-size-5') + ') !important;'}
         href={`/recipe/${recipe.slug.current}`}
       >
         {recipe.title}
@@ -63,6 +64,7 @@ const { recipe: recipe } = Astro.props;
     background-color: #FAECC3;
     padding: 0.5rem;
 
+
     & .pin {
       position: absolute;
       width: 50px;
@@ -74,6 +76,8 @@ const { recipe: recipe } = Astro.props;
       width: 100%;
       margin: 0 var(--space-1) 0;
       text-align: center;
+      display: flex;
+      justify-content: center;
     }
 
     & .card__cover {
@@ -95,6 +99,8 @@ const { recipe: recipe } = Astro.props;
       line-height: var(--line-height-6);
       letter-spacing: -0.025em;
       margin: var(--space-3) 0;
+
+      max-width: 200px !important;
     }
 
     & .card__excerpt {

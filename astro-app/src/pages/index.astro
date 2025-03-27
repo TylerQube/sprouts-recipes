@@ -19,13 +19,13 @@ console.log(recipes["Lunch"])
 <Layout title="Sprouts Recipe Book">
   <section>
     {Object.keys(recipes).map((k: string) => (
-      recipes[k].length && 
+      recipes[k].length > 0 && ( 
       <div class="recipe__section">
         <h1 class="recipe-type">{k}</h1>
         <div class="recipe__cards">
           {recipes[k].map((recipe) => <Card recipe={recipe} />)}
         </div>
-      </div>
+      </div>)
     ))}
   </section>
 </Layout>
@@ -53,7 +53,6 @@ console.log(recipes["Lunch"])
     background: url('/corkboard.png');
     background-repeat: repeat;
     border: 15px solid rgb(109, 40, 2);
-
   }
 
   .recipe__cards {
@@ -61,6 +60,9 @@ console.log(recipes["Lunch"])
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
+    align-items: flex-start;
+
+    gap: 2rem;
   }
 
   .recipe__section {
@@ -73,7 +75,7 @@ console.log(recipes["Lunch"])
     text-align: center;
     font-size: var(--font-size-7);
     color: white;
-    background-color: rgb(108, 40, 0);
+    background-color: brown;
     padding: 1rem 2rem;
     border: 2px solid white;
     display: inline-block;

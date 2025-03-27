@@ -55,7 +55,7 @@ console.log(placeholder);
       <div class="recipe__ingredients">
         <h1>Ingredients</h1>
         {recipe.ingredients.length && recipe.ingredients.map((section) => (
-          <h3>{section.section}</h3>
+          (recipe.ingredients.length > 1) && <h3>{section.section}</h3>
           <ul>
             {section.subIngredients.length && section.subIngredients.map(i => (
               <li><input type="checkbox"><span>{i.quantity} {i.unit} {i.name}</span></li>
@@ -67,12 +67,14 @@ console.log(placeholder);
       <div class="recipe__content">
         <h1>Instructions</h1>
         {recipe.instructionSections.length && recipe.instructionSections.map((section) => (
-          <h3>{section.section}</h3>
+          <div>
+          { (recipe.instructionSections.length > 1) && <h3>{section.section}</h3> }
           <ol>
             {section.instructions.length && section.instructions.map(i => (
               <li>{i}</li> 
             ))}
           </ol>
+          </div>
         ))}
        </ol> 
       </div>
