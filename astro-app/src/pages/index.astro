@@ -2,18 +2,31 @@
 import Card from "../components/Card.astro";
 import Welcome from "../components/Welcome.astro";
 import Layout from "../layouts/Layout.astro";
-import { getRecipes } from "../utils/sanity";
+import { getRecipe, getRecipes, type Recipe } from "../utils/sanity";
 
-let recipes = await getRecipes();
-for(let i = 0; i < 5; i++) {
-  recipes = recipes.concat(JSON.parse(JSON.stringify(recipes[0])));
+const breakfast = await getRecipes("breakfast");
+const lunch = await getRecipes("lunch");
+const bakedGoods = await getRecipes("dessert");
+const recipes: { [key: string]: Recipe[] } = {
+  "Breakfast": breakfast,
+  "Lunch": lunch,
+  "Baked Goods": bakedGoods
 }
-// recipes[2].title = "Basil Rhubarb Blondies";
+console.log(Object.keys(recipes));
+console.log(recipes["Lunch"])
 ---
 
 <Layout title="Sprouts Recipe Book">
   <section>
-    {recipes.length ? recipes.map((recipe) => <Card recipe={recipe} />) : <Welcome />}
+    {Object.keys(recipes).map((k: string) => (
+      recipes[k].length && 
+      <div class="recipe__section">
+        <h1 class="recipe-type">{k}</h1>
+        <div class="recipe__cards">
+          {recipes[k].map((recipe) => <Card recipe={recipe} />)}
+        </div>
+      </div>
+    ))}
   </section>
 </Layout>
 <style>
@@ -31,8 +44,7 @@ for(let i = 0; i < 5; i++) {
 
   section {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
+    flex-direction: column;
     flex-wrap: wrap;
     gap: 2rem;
 
@@ -41,6 +53,30 @@ for(let i = 0; i < 5; i++) {
     background: url('/corkboard.png');
     background-repeat: repeat;
     border: 15px solid rgb(109, 40, 2);
+
+  }
+
+  .recipe__cards {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .recipe__section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .recipe-type {
+    text-align: center;
+    font-size: var(--font-size-7);
+    color: white;
+    background-color: rgb(108, 40, 0);
+    padding: 1rem 2rem;
+    border: 2px solid white;
+    display: inline-block;
 
   }
 

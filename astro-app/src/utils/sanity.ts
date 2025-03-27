@@ -3,9 +3,9 @@ import type { PortableTextBlock } from "@portabletext/types";
 import type { ImageAsset, Slug } from "@sanity/types";
 import groq from "groq";
 
-export async function getRecipes(): Promise<Recipe[]> {
+export async function getRecipes(type: string = ""): Promise<Recipe[]> {
   return await sanityClient.fetch(
-    groq`*[_type == "recipe" && defined(slug.current)] | order(_createdAt desc)`
+    groq`*[_type == "recipe" && ${type ? `type == "${type}" &&` : ''} defined(slug.current)] | order(_createdAt desc)`
   );
 }
 
@@ -29,13 +29,21 @@ export interface IngredientSection {
   subIngredients: Ingredient[]
 };
 
+export interface InstructionSection {
+  section: string,
+  instructions: string[]
+};
+
+
 export interface Recipe {
   _type: "recipe";
   _createdAt: string;
   title: string;
   slug: Slug;
+  allergens: string[];
+  servings: number;
   description?: string;
   mainImage?: ImageAsset & { alt?: string };
-  body: PortableTextBlock[];
   ingredients: IngredientSection[];
+  instructionSections: InstructionSection[];
 }

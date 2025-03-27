@@ -23,6 +23,8 @@ console.log(placeholder);
 
 <Layout title={recipe.title!}>
   <section class="recipe">
+    <img id="pin1" src="/pushpins/red.png" alt="pushpin"/>
+    <img id="pin2" src="/pushpins/red.png" alt="pushpin"/>
     <div class="recipe__header">
     {
       recipe.mainImage ? (
@@ -40,10 +42,16 @@ console.log(placeholder);
         <p class="recipe__description">
            { recipe.description && <p>{recipe.description}</p>}
         </p>
+        <p style="justify-self: flex-start"><span class="bold">Servings: </span>{ recipe.servings } </p>
+        <p style="justify-self: flex-start"><span class="bold">Allergens:</span></p>
+        <div class="recipe__header__allergens">
+           {recipe.allergens.length && recipe.allergens.map(allergen => (
+            <p class="allergen">{allergen}</p>
+          ))}
+        </div>
 
       </div>
     </div>
-    <div class="recipe__container">
       <div class="recipe__ingredients">
         <h1>Ingredients</h1>
         {recipe.ingredients.length && recipe.ingredients.map((section) => (
@@ -54,12 +62,20 @@ console.log(placeholder);
             ))}
           </ul>
         ))}
-
-      </div>
       </div>
 
       <div class="recipe__content">
-    </div>
+        <h1>Instructions</h1>
+        {recipe.instructionSections.length && recipe.instructionSections.map((section) => (
+          <h3>{section.section}</h3>
+          <ol>
+            {section.instructions.length && section.instructions.map(i => (
+              <li>{i}</li> 
+            ))}
+          </ol>
+        ))}
+       </ol> 
+      </div>
   </section>
 </Layout>
 
@@ -67,14 +83,25 @@ console.log(placeholder);
   body {
     background-image: url('/corkboard.png');
     background-repeat: repeat;
-    border: 15px inset rgb(109, 40, 2);
   }
 
   body, html {
-    position: fixed;
     min-height: 100vh;
     width: 100vw;
     font-family: "Lexend Deca";
+  }
+
+  .allergen {
+    background-color: lightblue;
+    padding: 0.3rem 0.5rem;
+    border-radius: 0.5rem;
+
+    display: inline;
+    margin: 0;
+  }
+  
+  .bold {
+    font-weight: bold;
   }
 
   .recipe {
@@ -82,6 +109,26 @@ console.log(placeholder);
 
     background-color: white;
     padding: 2rem;
+
+    position: relative;
+
+    & #pin1 {
+      position: absolute;
+      width: 50px;
+      left: -0.5rem;
+      top: -1.2rem;
+      transform: rotate(-30deg);
+    }
+
+    & #pin2 {
+      position: absolute;
+      width: 50px;
+      right: -0.2rem;
+      top: -1rem;
+      transform: rotate(15deg);
+    }
+
+
 
     & .recipe__cover,
     & .recipe__cover--none {
@@ -93,17 +140,30 @@ console.log(placeholder);
     & .recipe__header {
       display: flex;
       align-items: flex-start;
-      justify-content: flex-start;
+      justify-content: center;
       gap: 2rem;
+      flex-wrap: wrap;
+
+      & .recipe__header__content {
+        flex-basis: 298px;
+        flex-grow: 1;
+
+        & p {
+          font-size: var(--font-size-3);
+        }
+      }
+
+      & .recipe__header__allergens {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
+      }
     }
 
     & .recipe__cover--none {
       margin: auto;
       background: var(--black);
-    }
-
-    & .recipe__container {
-      padding: 0 var(--space-3);
     }
 
     & .recipe__ingredients {
@@ -119,6 +179,14 @@ console.log(placeholder);
       & input:checked + span {
         text-decoration: line-through;
       }
+    }
+
+    & .recipe__ingredients {
+      font-weight: 400;
+      font-size: var(--font-size-4);
+      line-height: var(--line-height-5);
+      letter-spacing: -0.02em;
+      margin-top: var(--space-6);
     }
 
     & .recipe__content {
@@ -193,6 +261,19 @@ console.log(placeholder);
       & .recipe__content {
         margin-top: var(--space-7);
       }
+    }
+  }
+
+  @media (max-width: 575px) {
+    .recipe__cover {
+      width: 100% !important;
+    }
+    .recipe__header__content {
+      text-align: center;
+    }
+
+    #pin1, #pin2 {
+      display: none;
     }
   }
 </style>

@@ -125,12 +125,26 @@ export default defineType({
       ]
     }),
     defineField({
-      name: 'instructions',
-      title: 'Instructions',
+      name: 'instructionSections',
+      title: 'Instruction Sections',
       type: 'array',
       of: [
         {
-          type: 'string'
+          type: 'object',
+          fields: [
+            {
+              name: 'section',
+              title: 'Section',
+              type: 'string',
+              validation: Rule => Rule.required()
+            },
+            {
+              name: 'instructions',
+              title: 'Instructions',
+              type: 'array',
+              of: [ { type: 'string' }]
+            }
+          ]
         }
       ]
     }),
