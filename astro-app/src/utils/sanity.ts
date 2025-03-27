@@ -32,7 +32,7 @@ export interface IngredientSection {
 export interface Recipe {
   _type: "recipe";
   _createdAt: string;
-  title?: string;
+  title: string;
   slug: Slug;
   description?: string;
   mainImage?: ImageAsset & { alt?: string };

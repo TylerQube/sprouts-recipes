@@ -1,6 +1,6 @@
 ---
 import { formatDate } from "../utils";
-import { urlFor } from "../utils/image";
+import { urlFor, getRandomPlaceholder } from "../utils/image";
 import type { Recipe } from "../utils/sanity";
 
 interface Props {
@@ -11,15 +11,16 @@ const { recipe: recipe } = Astro.props;
 ---
 
 <div class="card">
+  <img class="pin" src="/pushpins/red.png" alt="pushpin"/>
   {
     recipe.mainImage ? (
       <img
         class="card__cover"
-        src={urlFor(recipe.mainImage).width(500).height(300).url()}
+        src={urlFor(recipe.mainImage).width(300).height(300).url()}
         alt={recipe.mainImage.alt || ""}
       />
     ) : (
-      <div class="card__cover--none" />
+      <img class="card__cover" src={"/placeholders/" + await getRandomPlaceholder(recipe.title)} alt="Placeholder">
     )
   }
   <div class="card__container">
@@ -31,23 +32,48 @@ const { recipe: recipe } = Astro.props;
         {recipe.title}
       </a>
     </h3>
-    <p class="card__date">
-      {formatDate(recipe._createdAt)}
-    </p>
   </div>
 </div>
 
 <style>
+
+  .card:nth-child(n)  { transform: rotate(5deg); }
+  .card:nth-child(2n) { transform: rotate(-3deg); }
+  .card:nth-child(3n) { transform: rotate(2deg); }
+  .card:nth-child(4n) { transform: rotate(1deg); }
+  .card:nth-child(5n) { transform: rotate(-2deg); }
+
+  .pin { transform-origin: 50% 50%; }
+  .card:nth-child(n)>.pin  { transform: translateX(-50%) rotate(-10deg); }
+  .card:nth-child(2n)>.pin { transform: translateX(-50%) rotate(0deg); }
+  .card:nth-child(3n)>.pin { transform: translateX(-50%) rotate(12deg); }
+  .card:nth-child(4n)>.pin { transform: translateX(-50%) rotate(5deg); }
+  .card:nth-child(5n)>.pin { transform: translateX(-50%) rotate(-15deg); }
+
+
   .card {
     display: flex;
     flex-direction: column;
-    padding: var(--space-2);
-    padding: 9px;
+    align-items: center;
+    max-width: 300px;
+
     position: relative;
     border-bottom: 1px solid #ced2d9;
 
+    background-color: #FAECC3;
+    padding: 0.5rem;
+
+    & .pin {
+      position: absolute;
+      width: 50px;
+      left: 50%;
+      top: -1rem;
+    }
+
     & .card__container {
+      width: 100%;
       margin: 0 var(--space-1) 0;
+      text-align: center;
     }
 
     & .card__cover {
@@ -65,7 +91,7 @@ const { recipe: recipe } = Astro.props;
     & .card__title {
       font-family: var(--font-family-sans);
       font-weight: 800;
-      font-size: var(--font-size-7);
+      font-size: var(--font-size-5);
       line-height: var(--line-height-6);
       letter-spacing: -0.025em;
       margin: var(--space-3) 0;
@@ -130,16 +156,10 @@ const { recipe: recipe } = Astro.props;
 
   @media (min-width: 800px) {
     .card {
-      flex-direction: row;
-
-      & .card__container {
-        margin: 0 var(--space-4) 0;
-      }
-
       & .card__cover,
       & .card__cover--none {
-        min-width: 366.5px;
-        max-width: 366.5px;
+        min-width: 231px;
+        max-width: 231px;
         max-height: 231px;
       }
     }

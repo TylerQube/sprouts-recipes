@@ -3,7 +3,7 @@ import type { InferGetStaticParamsType } from "astro";
 import { PortableText } from "astro-portabletext";
 import Layout from "../../layouts/Layout.astro";
 import { formatDate } from "../../utils";
-import { urlFor } from "../../utils/image";
+import { urlFor, getRandomPlaceholder } from "../../utils/image";
 import { getRecipe, getRecipes } from "../../utils/sanity";
 
 export async function getStaticPaths() {
@@ -17,6 +17,8 @@ type Params = InferGetStaticParamsType<typeof getStaticPaths>;
 const { slug } = Astro.params as Params;
 
 const recipe = await getRecipe(slug);
+const placeholder = await getRandomPlaceholder(recipe.title);
+console.log(placeholder);
 ---
 
 <Layout title={recipe.title!}>
@@ -29,7 +31,7 @@ const recipe = await getRecipe(slug);
           alt="Cover image"
         />
       ) : (
-        <div class="recipe__cover--none" />
+        <img class="recipe__cover" src={"/placeholders/" + placeholder} alt="Placeholder">
       )
     }
     <div class="recipe__container">

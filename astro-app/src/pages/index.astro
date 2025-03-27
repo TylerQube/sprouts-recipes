@@ -4,7 +4,11 @@ import Welcome from "../components/Welcome.astro";
 import Layout from "../layouts/Layout.astro";
 import { getRecipes } from "../utils/sanity";
 
-const recipes = await getRecipes();
+let recipes = await getRecipes();
+for(let i = 0; i < 5; i++) {
+  recipes = recipes.concat(JSON.parse(JSON.stringify(recipes[0])));
+}
+// recipes[2].title = "Basil Rhubarb Blondies";
 ---
 
 <Layout title="Sprouts Recipe Book">
@@ -12,3 +16,34 @@ const recipes = await getRecipes();
     {recipes.length ? recipes.map((recipe) => <Card recipe={recipe} />) : <Welcome />}
   </section>
 </Layout>
+<style>
+  body {
+    background-image: url('farm_field.jpg');
+    background-size: cover;
+  }
+
+  html, body {
+    height: 100vh;
+  }
+
+  section {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+
+    padding: 2rem;
+
+    background: url('/corkboard.png');
+    background-repeat: repeat;
+    border: 15px solid rgb(109, 40, 2);
+  }
+
+  @media (max-width: 575px) {
+    section {
+      border-left: 0px;
+      border-right: 0px;
+    }
+  }
+</style>
