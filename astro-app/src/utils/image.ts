@@ -16,6 +16,8 @@ export async function getPlaceholders(): Promise<string[]> {
 }
 
 const placeholders: string[] = await getPlaceholders();
-export async function getRandomPlaceholder(str: string) {
+export async function getRandomPlaceholder(str: string = "") {
+  if(str.length === 0)
+    return placeholders[Math.floor(Math.random() * placeholders.length)]
   return placeholders[str.charCodeAt(0) % placeholders.length];
 }

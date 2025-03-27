@@ -5,9 +5,10 @@ import type { Recipe } from "../utils/sanity";
 
 interface Props {
   recipe: Recipe;
+  placeholder: string;
 }
 
-const { recipe: recipe } = Astro.props;
+const { recipe: recipe, placeholder: placeholder } = Astro.props;
 ---
 
 <div class="card" style={`transform: rotate(${Math.random()*10-5}deg);`} >
@@ -20,7 +21,7 @@ const { recipe: recipe } = Astro.props;
         alt={recipe.mainImage.alt || ""}
       />
     ) : (
-      <img class="card__cover" src={"/placeholders/" + await getRandomPlaceholder(recipe.title)} alt="Placeholder">
+      <img class="card__cover" src={"/placeholders/" + placeholder} alt="Placeholder">
     )
   }
   <div class="card__container">
