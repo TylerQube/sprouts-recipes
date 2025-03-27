@@ -54,14 +54,25 @@ console.log(placeholder);
     </div>
       <div class="recipe__ingredients">
         <h1>Ingredients</h1>
-        {recipe.ingredients.length && recipe.ingredients.map((section) => (
-          (recipe.ingredients.length > 1) && <h3>{section.section}</h3>
+        {(recipe.ingredients.length > 1) && (recipe.ingredients.map(section => (
+          <h3>{section.section}</h3>
           <ul>
             {section.subIngredients.length && section.subIngredients.map(i => (
               <li><input type="checkbox"><span>{i.quantity} {i.unit} {i.name}</span></li>
             ))}
           </ul>
-        ))}
+        )))}
+
+        {(recipe.ingredients.length <= 1) && (recipe.ingredients.map(section => (
+          <ul>
+            {section.subIngredients.length && section.subIngredients.map(i => (
+              <li><input type="checkbox"><span>{i.quantity} {i.unit} {i.name}</span></li>
+            ))}
+          </ul>
+        )))}
+
+
+
       </div>
 
       <div class="recipe__content">
